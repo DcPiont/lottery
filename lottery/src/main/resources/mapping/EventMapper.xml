@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dcpiont.dao.EventDao">
+    <resultMap id="BaseResultMap" type="com.dcpiont.module.Event">
+        <id column="id" property="id" javaType="INT"/>
+        <result column="event_name" property="eventName"/>
+        <result column="is_end" property="isEnd"/>
+    </resultMap>
+    <insert id="addEvent" parameterMap="com.dcpiont.module.Event"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_event(event_name)
+             VALUES (#{event.eventName})
+    </insert>
+    <!--查询所有抽奖事件-->
+    <select id="getAllEvent" resultMap="BaseResultMap">
+        SELECT id,event_name,is_end
+          FROM tb_event
+      ORDER BY is_end,update_time DESC
+    </select>
+    <!--根据事件id查询具体事件-->
+    <select id="getEventById" parameterType="INT">
+        SELECT id,event_name,is_end
+          FROM tb_event
+         WHERE id=#{id}
+    </select>
+    <delete id="deleteEventById" parameterType="INT">
+        DELETE FROM tb_event
+              WHERE id=#{id}
+    </delete>
+</mapper>

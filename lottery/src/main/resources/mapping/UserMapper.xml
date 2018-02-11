@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dcpiont.dao.UserDao" >
+    <resultMap id="BaseResultMap" type="com.dcpiont.module.User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--验证-->
+    <select id="loginAuth" parameterMap="com.dcpiont.module.User" resultMap="BaseResultMap">
+        SELECT id,user_name,password
+          FROM tb_user
+         WHERE user_name=#{user.userName} AND password=MD5(#{user.password})
+    </select>
+    <!--注册-->
+    <insert id="registUser" parameterMap="com.dcpiont.module.User"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_user(user_name,password)
+             VALUES (#{user.userName},MD5(#{user.password}))
+    </insert>
+</mapper>

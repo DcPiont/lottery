@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dcpiont.dao.PresentDao">
+    <resultMap id="BaseResultMap" type="com.dcpiont.module.Present">
+        <id column="id" property="id" javaType="INT"/>
+        <result column="user_id" property="userId" javaType="INT" />
+        <result column="event_id" property="eventId" javaType="INT"/>
+        <result column="weight" property="weight" javaType="INT" />
+        <result column="present_name" property="presentName" javaType="VARCHAR"/>
+        <result column="winner_user_id" property="winnerUserId" javaType="VARCHAR"/>
+    </resultMap>
+    <insert id="addPresent" parameterMap="com.dcpiont.module.Present"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_present(user_id,event_id,present_name)
+             VALUES (#{present.userId},#{present.eventId},#{present.presentName})
+    </insert>
+    <!--查找某次抽奖的奖品-->
+    <select id="getPresentListByEventId" parameterType="INT" resultMap="BaseResultMap">
+        SELECT id,user_id,event_id,present_name,winner_user_id
+          FROM tb_present
+         WHERE event_id=#{eventId}
+    </select>
+    <!--更新礼物的权重-->
+    <update id="updatePresentWeight" parameterType="INT" >
+        UPDATE tb_present
+           SET weight=weight+1
+         WHERE id=#{presentId}
+    </update>
+    <insert id="addPresentNeed" parameterType="INT">
+        INSERT INTO tb_need(event_id,user_id,present_id)
+             VALUES (#{eventId},#{userId},#{presentId})
+    </insert>
+</mapper>
