@@ -16,5 +16,7 @@ public interface IPresentService {
 
 	int deletePresent(Present present);
 
-	int lottery();
+	int lottery(int eventId);
+
+	int updatePresentWeight(int presentId);
 }

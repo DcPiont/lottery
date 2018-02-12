@@ -1,6 +1,7 @@
 package com.dcpiont.dao;
 
 import com.dcpiont.module.Present;
+import com.dcpiont.module.Result;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,4 +18,5 @@ public interface PresentDao {
 
 	int addPresentNeed(@Param("eventId") int eventId, @Param("userId") int userId, @Param("presentId") int presentId);
 
+	int addResult(@Param("list")List<Result> list);
 }

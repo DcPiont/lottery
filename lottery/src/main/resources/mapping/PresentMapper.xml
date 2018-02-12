@@ -9,16 +9,29 @@
         <result column="present_name" property="presentName" javaType="VARCHAR"/>
         <result column="winner_user_id" property="winnerUserId" javaType="VARCHAR"/>
     </resultMap>
+    <resultMap id="NeedBOMap" type="com.dcpiont.module.NeedBO">
+        <result column="event_id" property="eventId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="present_id" property="presentId" jdbcType="INTEGER"/>
+    </resultMap>
+    <!--添加礼物-->
     <insert id="addPresent" parameterMap="com.dcpiont.module.Present"
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tb_present(user_id,event_id,present_name)
              VALUES (#{present.userId},#{present.eventId},#{present.presentName})
     </insert>
-    <!--查找某次抽奖的奖品-->
+    <!--查找指定抽奖事件的奖品列表-->
     <select id="getPresentListByEventId" parameterType="INT" resultMap="BaseResultMap">
         SELECT id,user_id,event_id,present_name,winner_user_id
           FROM tb_present
          WHERE event_id=#{eventId}
+      ORDER BY weight
+    </select>
+    <!--查找指定抽奖事件所有添加心愿单的用户及其心愿礼物-->
+    <select id="getNeedList" parameterType="INT" resultMap="NeedBOMap">
+            SELECT id,user_name
+            FROM tb_need
+            WHERE tb_user.id=tb_join_user.user.id AND event_id=#{eventId}
     </select>
     <!--更新礼物的权重-->
     <update id="updatePresentWeight" parameterType="INT" >
@@ -26,8 +39,16 @@
            SET weight=weight+1
          WHERE id=#{presentId}
     </update>
+    <!--添加参与抽奖的用户-->
     <insert id="addPresentNeed" parameterType="INT">
         INSERT INTO tb_need(event_id,user_id,present_id)
              VALUES (#{eventId},#{userId},#{presentId})
+    </insert>
+    <insert id="addResult" parameterType="List">
+        INSERT INTO tb_result(present_id,user_id,result)
+             VALUES
+              <foreach collection="list" item="item" index="index" separator=",">
+                  (#{item.presentId},#{item.userId},#{item.result})
+              </foreach>
     </insert>
 </mapper>

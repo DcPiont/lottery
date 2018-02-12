@@ -2,7 +2,7 @@ package com.dcpiont.controller;
 
 import com.dcpiont.module.ReturnT;
 import com.dcpiont.module.User;
-import com.dcpiont.service.impl.UserServiceImpl;
+import com.dcpiont.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("user")
 public class UserController {
 	@Autowired
-	private UserServiceImpl userService;
+	private IUserService userService;
 
 	@RequestMapping("login")
 	public String showLoginPage(){

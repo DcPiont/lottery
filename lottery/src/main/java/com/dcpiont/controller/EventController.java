@@ -2,7 +2,7 @@ package com.dcpiont.controller;
 
 import com.dcpiont.module.Event;
 import com.dcpiont.module.ReturnT;
-import com.dcpiont.service.impl.EventServiceImpl;
+import com.dcpiont.service.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("event")
 public class EventController {
 	@Autowired
-	private EventServiceImpl eventService;
+	private IEventService eventService;
 
 	@RequestMapping("addEvent")
 	@ResponseBody

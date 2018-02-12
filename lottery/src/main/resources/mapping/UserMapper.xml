@@ -8,7 +8,7 @@
     </resultMap>
     <!--验证-->
     <select id="loginAuth" parameterMap="com.dcpiont.module.User" resultMap="BaseResultMap">
-        SELECT id,user_name,password
+        SELECT id,user_name
           FROM tb_user
          WHERE user_name=#{user.userName} AND password=MD5(#{user.password})
     </select>
