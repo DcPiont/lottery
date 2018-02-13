@@ -13,4 +13,10 @@ public interface IEventService {
 	Event getEventById(int id);
 
 	int addEvent(Event event) throws Exception;
+
+	int deleteEvent(int eventId);
+
+	int stopEvent(int eventId);
+
+	Event getLatestStartedEvent();
 }

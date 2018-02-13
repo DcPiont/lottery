@@ -10,7 +10,7 @@ import java.util.List;
  * Created by DcPiont on 2018/2/11.
  */
 public interface PresentDao {
-	int addPresent(@Param("present") Present present);
+	int addPresent(Present present);
 
 	List<Present> getPresentListByEventId(@Param("presentId") int eventId);
 

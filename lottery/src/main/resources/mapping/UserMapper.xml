@@ -7,15 +7,25 @@
         <result column="password" property="password" jdbcType="VARCHAR"/>
     </resultMap>
     <!--验证-->
-    <select id="loginAuth" parameterMap="com.dcpiont.module.User" resultMap="BaseResultMap">
+    <select id="loginAuth" parameterType="com.dcpiont.module.User" resultMap="BaseResultMap">
         SELECT id,user_name
           FROM tb_user
          WHERE user_name=#{user.userName} AND password=MD5(#{user.password})
     </select>
     <!--注册-->
-    <insert id="registUser" parameterMap="com.dcpiont.module.User"
-            useGeneratedKeys="true" keyProperty="id">
+    <insert id="registUser" parameterType="com.dcpiont.module.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tb_user(user_name,password)
-             VALUES (#{user.userName},MD5(#{user.password}))
+             VALUES (#{userName},MD5(#{password}))
     </insert>
+    <!--验证用户是否存在-->
+    <select id="selectUserByName" parameterType="String" resultMap="BaseResultMap">
+        SELECT id,user_name
+          FROM tb_user
+         WHERE user_name=#{userName}
+    </select>
+    <!--删除用户-->
+    <delete id="deleteUserById" parameterType="int">
+        DELETE FROM tb_user
+              WHERE id=#{userId}
+    </delete>
 </mapper>

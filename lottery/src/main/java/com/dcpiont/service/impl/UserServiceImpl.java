@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements IUserService {
 	@Autowired
 	private UserDao userDao;
+
+	public User selectUserByName(String userName) {
+		return userDao.selectUserByName(userName);
+	}
+
 	public User loginAuth(User user){
 		User result = userDao.loginAuth(user);
 		return result;
@@ -20,5 +25,9 @@ public class UserServiceImpl implements IUserService {
 	public int registUser(User user) throws Exception{
 		int res = userDao.registUser(user);
 		return res;
+	}
+
+	public int deleteUser(int userId) {
+		return userDao.deleteUserById(userId);
 	}
 }

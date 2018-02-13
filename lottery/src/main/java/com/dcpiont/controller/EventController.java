@@ -26,9 +26,9 @@ public class EventController {
 	public ReturnT addEvent(@RequestBody Event event) throws Exception{
 		int res = eventService.addEvent(event);
 		if(res >0){
-			return ReturnT.SUCCESS;
+			return new ReturnT(event);
 		}else {
-			return new ReturnT(ReturnT.FAIL_CODE,"创建事件失败");
+			return new ReturnT(ReturnT.FAIL_CODE,"创建抽奖失败");
 		}
 	}
 	@RequestMapping("getAllEvent")
@@ -38,6 +38,13 @@ public class EventController {
 		return new ReturnT(list);
 	}
 
+	@RequestMapping("getLatestStartedEvent")
+	@ResponseBody
+	public ReturnT getLatestStartedEvent() throws Exception{
+		Event event = eventService.getLatestStartedEvent();
+		return new ReturnT(event);
+	}
+
 	@RequestMapping("getEventById")
 	@ResponseBody
 	public ReturnT getEventById(@RequestParam("eventId")int eventId){
@@ -45,7 +52,29 @@ public class EventController {
 		if(event != null){
 			return new ReturnT(event);
 		}else {
-			return new ReturnT(ReturnT.FAIL_CODE,"该事件不存在");
+			return new ReturnT(ReturnT.FAIL_CODE,"该抽奖不存在");
+		}
+	}
+
+	@RequestMapping("deleteEvent")
+	@ResponseBody
+	public ReturnT deleteEventId(@RequestParam("eventId")int eventId){
+		int res = eventService.deleteEvent(eventId);
+		if(res >0){
+			return ReturnT.SUCCESS;
+		}else {
+			return new ReturnT(ReturnT.FAIL_CODE,"删除抽奖失败");
+		}
+	}
+
+	@RequestMapping("stopEvent")
+	@ResponseBody
+	public ReturnT stopEvent(@RequestParam("eventId")int eventId){
+		int res = eventService.stopEvent(eventId);
+		if(res >0){
+			return ReturnT.SUCCESS;
+		}else {
+			return new ReturnT(ReturnT.FAIL_CODE,"暂停抽奖失败");
 		}
 	}
 

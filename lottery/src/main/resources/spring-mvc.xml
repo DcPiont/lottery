@@ -12,7 +12,7 @@
 
     <!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
     <mvc:annotation-driven/>
-
+    <context:component-scan base-package="com.dcpiont.controller" />
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
     <bean id="mappingJacksonHttpMessageConverter"
     class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">

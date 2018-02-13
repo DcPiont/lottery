@@ -27,4 +27,16 @@ public class EventServiceImpl implements IEventService {
 	public int addEvent(Event event) throws Exception{
 		return eventDao.addEvent(event);
 	}
+
+	public int deleteEvent(int eventId) {
+		return eventDao.deleteEventById(eventId);
+	}
+
+	public Event getLatestStartedEvent() {
+		return eventDao.getLatestStartedEvent();
+	}
+
+	public int stopEvent(int eventId) {
+		return eventDao.stopEvent(eventId);
+	}
 }

@@ -6,7 +6,11 @@ import com.dcpiont.module.User;
  * Created by DcPiont on 2018/2/11.
  */
 public interface IUserService {
-	public User loginAuth(User user);
+	User selectUserByName(String userName);
 
-	public int registUser(User user) throws Exception;
+	User loginAuth(User user);
+
+	int registUser(User user) throws Exception;
+
+	int deleteUser(int userId);
 }

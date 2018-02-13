@@ -10,9 +10,13 @@ import java.util.List;
  * Created by DcPiont on 2018/2/11.
  */
 public interface UserDao {
-	int registUser(@Param("user")User user);
+	User selectUserByName(String userName);
+
+	int registUser(User user);
 
 	User loginAuth(@Param("user")User user);
 
 	List<NeedBO> getJoinUserList(@Param("eventId")int eventId);
+
+	int deleteUserById(int userId);
 }

@@ -2,14 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dcpiont.dao.EventDao">
     <resultMap id="BaseResultMap" type="com.dcpiont.module.Event">
-        <id column="id" property="id" javaType="INT"/>
-        <result column="event_name" property="eventName"/>
-        <result column="is_end" property="isEnd"/>
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="event_name" property="eventName" jdbcType="VARCHAR"/>
+        <result column="is_end" property="isEnd" jdbcType="TINYINT"/>
     </resultMap>
-    <insert id="addEvent" parameterMap="com.dcpiont.module.Event"
-            useGeneratedKeys="true" keyProperty="id">
+    <insert id="addEvent" parameterType="com.dcpiont.module.Event" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tb_event(event_name)
-             VALUES (#{event.eventName})
+             VALUES (#{eventName})
     </insert>
     <!--查询所有抽奖事件-->
     <select id="getAllEvent" resultMap="BaseResultMap">
@@ -27,4 +26,18 @@
         DELETE FROM tb_event
               WHERE id=#{id}
     </delete>
+    <!--暂停抽奖-->
+    <update id="stopEvent" parameterType="INT">
+        UPDATE tb_event
+           SET is_end=1
+         WHERE id=#{eventId}
+    </update>
+    <!--获取最新的未抽奖事件-->
+    <select id="getLatestStartedEvent" resultMap="BaseResultMap">
+        SELECT id,event_name,is_end
+          FROM tb_event
+         WHERE is_end=0
+         ORDER BY update_time DESC
+         LIMIT 0,1
+    </select>
 </mapper>

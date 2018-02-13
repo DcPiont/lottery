@@ -3,11 +3,11 @@
 <mapper namespace="com.dcpiont.dao.PresentDao">
     <resultMap id="BaseResultMap" type="com.dcpiont.module.Present">
         <id column="id" property="id" javaType="INT"/>
-        <result column="user_id" property="userId" javaType="INT" />
-        <result column="event_id" property="eventId" javaType="INT"/>
-        <result column="weight" property="weight" javaType="INT" />
-        <result column="present_name" property="presentName" javaType="VARCHAR"/>
-        <result column="winner_user_id" property="winnerUserId" javaType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="event_id" property="eventId" jdbcType="INTEGER"/>
+        <result column="weight" property="weight" jdbcType="INTEGER" />
+        <result column="present_name" property="presentName" jdbcType="VARCHAR"/>
+        <result column="winner_user_id" property="winnerUserId" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="NeedBOMap" type="com.dcpiont.module.NeedBO">
         <result column="event_id" property="eventId" jdbcType="INTEGER"/>
@@ -15,10 +15,10 @@
         <result column="present_id" property="presentId" jdbcType="INTEGER"/>
     </resultMap>
     <!--添加礼物-->
-    <insert id="addPresent" parameterMap="com.dcpiont.module.Present"
+    <insert id="addPresent" parameterType="com.dcpiont.module.Present"
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tb_present(user_id,event_id,present_name)
-             VALUES (#{present.userId},#{present.eventId},#{present.presentName})
+             VALUES (#{userId},#{eventId},#{presentName})
     </insert>
     <!--查找指定抽奖事件的奖品列表-->
     <select id="getPresentListByEventId" parameterType="INT" resultMap="BaseResultMap">
@@ -44,6 +44,7 @@
         INSERT INTO tb_need(event_id,user_id,present_id)
              VALUES (#{eventId},#{userId},#{presentId})
     </insert>
+    <!--添加每个礼物的抽奖结果-->
     <insert id="addResult" parameterType="List">
         INSERT INTO tb_result(present_id,user_id,result)
              VALUES
