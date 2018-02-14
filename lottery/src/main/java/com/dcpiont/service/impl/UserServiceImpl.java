@@ -30,4 +30,8 @@ public class UserServiceImpl implements IUserService {
 	public int deleteUser(int userId) {
 		return userDao.deleteUserById(userId);
 	}
+
+	public int updateUser(User user){
+		return userDao.updateUserInfo(user);
+	}
 }

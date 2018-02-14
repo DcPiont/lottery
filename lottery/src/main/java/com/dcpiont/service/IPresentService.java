@@ -1,5 +1,6 @@
 package com.dcpiont.service;
 
+import com.dcpiont.module.NeedBO;
 import com.dcpiont.module.Present;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface IPresentService {
 	int lottery(int eventId);
 
 	int updatePresentWeight(int presentId);
+
+	NeedBO getUserNeedPresent(int eventId, int userId);
 }

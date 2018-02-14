@@ -5,10 +5,7 @@ import com.dcpiont.module.ReturnT;
 import com.dcpiont.service.IPresentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,14 +35,11 @@ public class PresentController {
 		return new ReturnT(list);
 	}
 
-	@RequestMapping("addNeed")
+	@RequestMapping(value = "addNeed", method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
 	public ReturnT addPresentNeed(@RequestParam("userId") int userId, @RequestParam("presentId") int presentId, @RequestParam("eventId") int eventId) {
 		int res = presentService.addPresentNeed(userId, presentId, eventId);
-		if (res > 0) {
-			return ReturnT.SUCCESS;
-		}
-		return new ReturnT(ReturnT.FAIL_CODE, "添加心愿失败");
+		return new ReturnT(ReturnT.SUCCESS_CODE, "result:" + res);
 	}
 
 	@RequestMapping("lottery")

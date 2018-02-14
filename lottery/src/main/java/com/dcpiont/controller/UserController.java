@@ -22,7 +22,7 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
-	@RequestMapping("login")
+	@RequestMapping("/")
 	public String showLoginPage() {
 		return "page/login";
 	}
@@ -81,11 +81,22 @@ public class UserController {
 	 * @param user
 	 * @return
 	 *
-	 * @TODO
+	 * TODO 待后续改为统一异常管理
 	 */
 	@RequestMapping("updatePassword")
 	@ResponseBody
-	public ReturnT updatePassword(@RequestBody User user) {
-		return null;
+	public ReturnT updatePassword(@RequestBody User user, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		int userId = Integer.parseInt((String)session.getAttribute("userId"));
+		if(user.getId() == userId) {
+			int res = userService.updateUser(user);
+			if (res > 0) {
+				return ReturnT.SUCCESS;
+			}else {
+				return new ReturnT(ReturnT.FAIL_CODE, "更新用户信息失败");
+			}
+		}else {
+			return new ReturnT(ReturnT.FAIL_CODE, "请先登录");
+		}
 	}
 }

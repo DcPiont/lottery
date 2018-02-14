@@ -28,4 +28,14 @@
         DELETE FROM tb_user
               WHERE id=#{userId}
     </delete>
+    <!--更新用户密码，后期可能会增加修改头像功能-->
+    <update id="updateUserInfo">
+        UPDATE tb_user
+           <set>
+               <if test="password != null">
+                   password=MD5(#{user.password}),
+               </if>
+           </set>
+         WHERE id=#{user.id}
+    </update>
 </mapper>

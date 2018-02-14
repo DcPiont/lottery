@@ -13,4 +13,6 @@ public interface IUserService {
 	int registUser(User user) throws Exception;
 
 	int deleteUser(int userId);
+
+	int updateUser(User user);
 }

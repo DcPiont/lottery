@@ -17,39 +17,52 @@
     <!--添加礼物-->
     <insert id="addPresent" parameterType="com.dcpiont.module.Present"
             useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO tb_present(user_id,event_id,present_name)
-             VALUES (#{userId},#{eventId},#{presentName})
+        INSERT INTO tb_presents(user_id,event_id,present_name)
+        VALUES (#{userId},#{eventId},#{presentName})
     </insert>
     <!--查找指定抽奖事件的奖品列表-->
     <select id="getPresentListByEventId" parameterType="INT" resultMap="BaseResultMap">
-        SELECT id,user_id,event_id,present_name,winner_user_id
-          FROM tb_present
-         WHERE event_id=#{eventId}
-      ORDER BY weight
+        SELECT id,user_id,event_id,present_name,win_user_id
+        FROM tb_presents
+        WHERE event_id=#{eventId}
+        ORDER BY weight
     </select>
     <!--查找指定抽奖事件所有添加心愿单的用户及其心愿礼物-->
     <select id="getNeedList" parameterType="INT" resultMap="NeedBOMap">
-            SELECT id,user_name
-            FROM tb_need
-            WHERE tb_user.id=tb_join_user.user.id AND event_id=#{eventId}
+        SELECT id,user_name,present_id
+          FROM tb_need,tb_user
+         WHERE tb_user.id=tb_need.user_id AND event_id=#{eventId}
+    </select>
+    <!--查看该事件用户是否已选择礼物-->
+    <select id="getUserNeedPresent" resultMap="NeedBOMap">
+        SELECT id,user_name
+          FROM tb_need,tb_user
+         WHERE tb_user.id=tb_need.user_id AND event_id=#{eventId} AND user_id=#{userId}
     </select>
     <!--更新礼物的权重-->
     <update id="updatePresentWeight" parameterType="INT" >
-        UPDATE tb_present
-           SET weight=weight+1
-         WHERE id=#{presentId}
+        UPDATE tb_presents
+        SET weight=weight+1
+        WHERE id=#{presentId}
     </update>
-    <!--添加参与抽奖的用户-->
+    <!--添加参与抽奖的用户，若存在则更新-->
     <insert id="addPresentNeed" parameterType="INT">
         INSERT INTO tb_need(event_id,user_id,present_id)
-             VALUES (#{eventId},#{userId},#{presentId})
+        VALUES (#{eventId},#{userId},#{presentId})
+        ON DUPLICATE KEY UPDATE present_id=VALUES(present_id)
     </insert>
     <!--添加每个礼物的抽奖结果-->
     <insert id="addResult" parameterType="List">
         INSERT INTO tb_result(present_id,user_id,result)
-             VALUES
-              <foreach collection="list" item="item" index="index" separator=",">
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
                   (#{item.presentId},#{item.userId},#{item.result})
               </foreach>
     </insert>
+    <!--更新礼物的获奖者-->
+    <update id="updatePresentWinner" parameterType="int">
+        UPDATE tb_presents
+           SET win_user_id=#{userId}
+         WHERE id=#{presentId}
+    </update>
 </mapper>
