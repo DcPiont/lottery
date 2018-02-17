@@ -9,6 +9,15 @@
         <result column="present_name" property="presentName" jdbcType="VARCHAR"/>
         <result column="winner_user_id" property="winnerUserId" jdbcType="VARCHAR"/>
     </resultMap>
+    <resultMap id="PresentVOMap" type="com.dcpiont.module.PresentVO">
+        <id column="id" property="id" javaType="INT"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="event_id" property="eventId" jdbcType="INTEGER"/>
+        <result column="weight" property="weight" jdbcType="INTEGER" />
+        <result column="present_name" property="presentName" jdbcType="VARCHAR"/>
+        <result column="winner_user_id" property="winnerUserId" jdbcType="VARCHAR"/>
+    </resultMap>
     <resultMap id="NeedBOMap" type="com.dcpiont.module.NeedBO">
         <result column="event_id" property="eventId" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="INTEGER"/>
@@ -21,11 +30,11 @@
         VALUES (#{userId},#{eventId},#{presentName})
     </insert>
     <!--查找指定抽奖事件的奖品列表-->
-    <select id="getPresentListByEventId" parameterType="INT" resultMap="BaseResultMap">
-        SELECT id,user_id,event_id,present_name,win_user_id
-        FROM tb_presents
-        WHERE event_id=#{eventId}
-        ORDER BY weight
+    <select id="getPresentListByEventId" parameterType="INT" resultMap="PresentVOMap">
+        SELECT tb_presents.id,tb_presents.user_id,event_id,present_name,win_user_id,user_name,weight
+        FROM tb_presents,tb_user
+        WHERE event_id=#{eventId} AND tb_presents.user_id=tb_user.id
+        ORDER BY weight DESC
     </select>
     <!--查找指定抽奖事件所有添加心愿单的用户及其心愿礼物-->
     <select id="getNeedList" parameterType="INT" resultMap="NeedBOMap">
@@ -35,7 +44,7 @@
     </select>
     <!--查看该事件用户是否已选择礼物-->
     <select id="getUserNeedPresent" resultMap="NeedBOMap">
-        SELECT id,user_name
+        SELECT id,user_name,present_id
           FROM tb_need,tb_user
          WHERE tb_user.id=tb_need.user_id AND event_id=#{eventId} AND user_id=#{userId}
     </select>
@@ -65,4 +74,10 @@
            SET win_user_id=#{userId}
          WHERE id=#{presentId}
     </update>
+    <select id="getPresentWinner" parameterType="INT" resultMap="PresentVOMap">
+       SELECT tb_presents.id,tb_presents.user_id,event_id,present_name,win_user_id,user_name,weight
+         FROM tb_presents,tb_user
+        WHERE tb_user.id=tb_presents.win_user_id AND event_id=#{eventId}
+        ORDER BY weight DESC
+    </select>
 </mapper>

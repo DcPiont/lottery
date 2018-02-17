@@ -2,6 +2,7 @@ package com.dcpiont.service.impl;
 
 import com.dcpiont.dao.EventDao;
 import com.dcpiont.module.Event;
+import com.dcpiont.module.EventVO;
 import com.dcpiont.service.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class EventServiceImpl implements IEventService {
 		return eventDao.deleteEventById(eventId);
 	}
 
-	public Event getLatestStartedEvent() {
+	public EventVO getLatestStartedEvent() {
 		return eventDao.getLatestStartedEvent();
 	}
 

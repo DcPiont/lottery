@@ -1,6 +1,7 @@
 package com.dcpiont.dao;
 
 import com.dcpiont.module.Event;
+import com.dcpiont.module.EventVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,5 +20,5 @@ public interface EventDao {
 
 	int stopEvent(int eventId);
 
-	Event getLatestStartedEvent();
+	EventVO getLatestStartedEvent();
 }

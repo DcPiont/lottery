@@ -1,6 +1,7 @@
 package com.dcpiont.service;
 
 import com.dcpiont.module.Event;
+import com.dcpiont.module.EventVO;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface IEventService {
 
 	int stopEvent(int eventId);
 
-	Event getLatestStartedEvent();
+	EventVO getLatestStartedEvent();
 }

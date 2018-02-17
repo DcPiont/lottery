@@ -6,6 +6,12 @@
         <result column="event_name" property="eventName" jdbcType="VARCHAR"/>
         <result column="is_end" property="isEnd" jdbcType="TINYINT"/>
     </resultMap>
+    <resultMap id="EventVOMap" type="com.dcpiont.module.EventVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="event_name" property="eventName" jdbcType="VARCHAR"/>
+        <result column="is_end" property="isEnd" jdbcType="TINYINT"/>
+        <result column="count" property="count" jdbcType="INTEGER"/>
+    </resultMap>
     <insert id="addEvent" parameterType="com.dcpiont.module.Event" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tb_event(event_name)
              VALUES (#{eventName})
@@ -17,7 +23,7 @@
       ORDER BY is_end,update_time DESC
     </select>
     <!--根据事件id查询具体事件-->
-    <select id="getEventById" parameterType="INT">
+    <select id="getEventById" parameterType="INT" resultMap="BaseResultMap">
         SELECT id,event_name,is_end
           FROM tb_event
          WHERE id=#{id}
@@ -33,10 +39,10 @@
          WHERE id=#{eventId}
     </update>
     <!--获取最新的未抽奖事件-->
-    <select id="getLatestStartedEvent" resultMap="BaseResultMap">
-        SELECT id,event_name,is_end
-          FROM tb_event
-         WHERE is_end=0
+    <select id="getLatestStartedEvent" resultMap="EventVOMap">
+        SELECT id,event_name,is_end,count(id) AS `count`
+          FROM tb_event,tb_need
+         WHERE is_end=0 AND tb_event.id=tb_need.event_id
          ORDER BY update_time DESC
          LIMIT 0,1
     </select>

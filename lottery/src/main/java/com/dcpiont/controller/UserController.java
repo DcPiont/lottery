@@ -24,7 +24,7 @@ public class UserController {
 
 	@RequestMapping("/")
 	public String showLoginPage() {
-		return "page/login";
+		return "login";
 	}
 
 	@RequestMapping("auth")

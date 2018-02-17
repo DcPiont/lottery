@@ -1,9 +1,11 @@
 package com.dcpiont.service.impl;
 
+import com.dcpiont.dao.EventDao;
 import com.dcpiont.dao.PresentDao;
 import com.dcpiont.dao.UserDao;
 import com.dcpiont.module.NeedBO;
 import com.dcpiont.module.Present;
+import com.dcpiont.module.PresentVO;
 import com.dcpiont.module.Result;
 import com.dcpiont.service.IPresentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,9 @@ public class PresentServiceImpl implements IPresentService {
 	@Autowired
 	private PresentDao presentDao;
 	@Autowired
-	private UserDao userDao;
+	private EventDao eventDao;
 
-	public List<Present> getAllPresentByEventId(int eventId) {
+	public List<PresentVO> getAllPresentByEventId(int eventId) {
 		return presentDao.getPresentListByEventId(eventId);
 	}
 
@@ -53,11 +55,11 @@ public class PresentServiceImpl implements IPresentService {
 	public int lottery(int eventId) {
 		int res = 0;
 		//获取当前抽奖事件的所有奖品
-		List<Present> presentList = presentDao.getPresentListByEventId(eventId);
+		List<PresentVO> presentList = presentDao.getPresentListByEventId(eventId);
 		//获取当前事件所有参与人员
 		List<NeedBO> userList = presentDao.getNeedList(eventId);
 		while(presentList.size()>0) {
-			Present present = presentList.get(0);
+			PresentVO present = presentList.get(0);
 			NeedBO winner = null;
 			List<Result> resultList = new ArrayList<Result>();
 			for (NeedBO needBO : userList) {
@@ -103,6 +105,7 @@ public class PresentServiceImpl implements IPresentService {
 			//移除已开奖奖品
 			presentList.remove(present);
 		}
+		eventDao.stopEvent(eventId);
 		return res;
 	}
 
@@ -113,4 +116,8 @@ public class PresentServiceImpl implements IPresentService {
 	public NeedBO getUserNeedPresent(int eventId, int userId) {
 		return presentDao.getUserNeedPresent(eventId, userId);
 	}
+
+	public List<PresentVO> getPresentWinner(int eventId){
+		return presentDao.getPresentWinner(eventId);
+	};
 }
